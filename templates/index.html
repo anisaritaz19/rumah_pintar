@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smart Home Energy · Q-Learning</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body>
+<header><div class="wrap hd"><div><h1>⚡ Manajemen Energi Rumah Pintar</h1><p>Q-Learning pada dataset UCI Individual Household Electric Power Consumption · TA-07</p></div>
+<nav id="tabs"><button data-t="ringkasan" class="on">Ringkasan</button><button data-t="simulasi">Simulasi Hari</button><button data-t="latih">Latih Sendiri</button><button data-t="kebijakan">Kebijakan &amp; Q-Table</button></nav></div></header>
+<main class="wrap">
+<section id="ringkasan" class="tab on"><div id="kpis" class="cards"></div>
+<div class="grid2"><div class="card"><h3>Perbandingan pada data uji</h3><canvas id="cBar" height="260"></canvas></div>
+<div class="card"><h3>Kurva belajar (return validasi, greedy)</h3><canvas id="cCurve" height="260"></canvas></div></div>
+<div class="card"><h3>Hasil grid hiperparameter (return validasi, rata-rata 3 seed)</h3><div id="gridTable" class="scroll"></div></div>
+<div class="card" id="notes"></div></section>
+
+<section id="simulasi" class="tab"><div class="card"><div class="row"><label>Tanggal (data nyata)
+<select id="dateSel"></select></label><label>Model Q<select id="qidSel"><option value="best">Model terbaik (hasil eksperimen)</option></select></label><button id="goDay" class="btn">Jalankan simulasi</button></div>
+<div id="dayKpi" class="cards"></div><canvas id="cDay" height="300"></canvas><div class="legend" id="dayLegend"></div><div id="dayTable" class="scroll"></div></div></section>
+
+<section id="latih" class="tab"><div class="card"><h3>Latih agen Q-Learning dengan hiperparameter sendiri</h3>
+<p class="muted">Pelatihan memakai data latih nyata (60% hari pertama). Maksimum 30.000 episode agar tetap cepat.</p>
+<div class="row wrapf"><label>α awal<input id="pa" type="number" step="0.05" min="0.01" max="1" value="0.5"></label><label>γ<input id="pg" type="number" step="0.01" min="0" max="0.999" value="0.99"></label>
+<label>ε-decay<input id="pe" type="number" step="0.0001" min="0.9" max="1" value="0.9998"></label><label>Peluruhan α<input id="pd" type="number" step="0.01" min="0" max="1" value="0.05"></label>
+<label>Episode<input id="pn" type="number" step="500" min="100" max="30000" value="10000"></label><label>Seed<input id="ps" type="number" value="1"></label>
+<button id="goTrain" class="btn">Latih</button></div><div id="trainMsg" class="muted"></div>
+<div id="trainOut" style="display:none"><div id="trainKpi" class="cards"></div><div class="grid2"><div><h4>Return pelatihan</h4><canvas id="cTr" height="240"></canvas></div><div><h4>Return validasi (greedy)</h4><canvas id="cTv" height="240"></canvas></div></div></div></div></section>
+
+<section id="kebijakan" class="tab"><div class="card"><h3>Peta kebijakan greedy dari Q-Table</h3><div class="row wrapf"><label>Model<select id="qidPol"><option value="best">Model terbaik</option></select></label>
+<label>Level permintaan<select id="dl"><option value="0">Rendah</option><option value="1" selected>Sedang</option><option value="2">Tinggi</option></select></label>
+<label>Level beban terkontrol<select id="ll"><option value="0">Rendah</option><option value="1" selected>Sedang</option><option value="2">Tinggi</option></select></label><button id="goPol" class="btn">Tampilkan</button></div>
+<canvas id="cPol" height="230"></canvas><div class="legend"><span><i style="background:#e6a817"></i>NORMAL</span><span><i style="background:#d62728"></i>TUNDA</span><span><i style="background:#2ca02c"></i>LEPAS TUNDAAN</span></div></div></section>
+</main>
+<footer><div class="wrap">Data: Hebrail &amp; Berard (2012), UCI Machine Learning Repository. Tarif, batas tunda, dan bobot kenyamanan adalah asumsi simulasi.</div></footer>
+<script src="{{ url_for('static', filename='app.js') }}"></script></body></html>
